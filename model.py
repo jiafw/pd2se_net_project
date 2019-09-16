@@ -40,9 +40,9 @@ class BasicCNN(nn.Module):
         x = self.Layer3(x)
         x = self.relu4(x)
 
-        x1 = F.softmax(self.FC1(x.view(-1, 244*244*64)), dim=1)
-        x2 = F.softmax(self.FC2(x.view(-1, 244*244*64)), dim=1)
-        x3 = F.softmax(self.FC3(x.view(-1, 244*244*64)), dim=1)
+        x1 = self.FC1(x.view(-1, 244*244*64))
+        x2 = self.FC2(x.view(-1, 244*244*64))
+        x3 = self.FC3(x.view(-1, 244*244*64))
 
         return x1, x2, x3
 
@@ -85,7 +85,7 @@ class DiseaseModel(nn.Module):
         x = self.Layer2(x)
         x = self.Layer3(x)
         x = self.Shuffle2_3(self.Shuffle2_2(self.Shuffle2_1(x)))
-        x = F.softmax(self.FC(x.view(-1, 2048*4*4)), dim=1)
+        x = self.FC(x.view(-1, 2048*4*4))
         return x
 
 
@@ -117,7 +117,7 @@ class PlantModel(nn.Module):
         x = self.Layer2(x)
         x = self.Layer3(x)
         x = self.Shuffle1_3(self.Shuffle1_2(self.Shuffle1_1(x)))
-        x = F.softmax(self.FC(x.view(-1, 2048*8*8)), dim=1)
+        x = self.FC(x.view(-1, 2048*8*8))
         return x
 
 
@@ -159,7 +159,7 @@ class PD2SEModel(nn.Module):
         severity_class = severity_class.view(-1, 2048*8*8)
         plant_class = plant_class.view(-1, 2048*8*8)
         disease_class = disease_class.view(-1, 2048*4*4)
-        plant_class = F.softmax(self.FC1(plant_class), dim=1)
-        disease_class = F.softmax(self.FC2(disease_class), dim=1)
-        severity_class = F.softmax(self.FC3(severity_class), dim=1)
+        plant_class =self.FC1(plant_class)
+        disease_class = self.FC2(disease_class)
+        severity_class = self.FC3(severity_class)
         return plant_class, disease_class, severity_class
