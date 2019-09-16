@@ -103,8 +103,10 @@ class PlantsDiseaseDataset(Dataset):
                     img_fp = os.path.join(VAL_IMG_PATH,
                                           _['image_id']).encode('ascii', 'ignore').decode('utf-8')
                     if os.path.exists(img_fp):
-                        imgs.append(img_fp)
-                        lbs.append(_['disease_class'])
+                        label_to_match = _['disease_class']
+                        if label_to_match in MAP_61to45.keys():
+                            imgs.append(img_fp)
+                            lbs.append(_['disease_class'])
             sub_lbs = []
             for idx in range(len(lbs)):
                 if str(lbs[idx]) in MAP_61to45.keys():
